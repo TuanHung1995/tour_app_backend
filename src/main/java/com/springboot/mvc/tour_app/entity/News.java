@@ -26,4 +26,8 @@ public class News {
     private Date created_at;
     private String status;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }
