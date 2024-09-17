@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -22,12 +24,15 @@ public class Tour {
     private String name;
     private String description;
     private String location;
-    private String price;
-    private String duration;
-    private String start_date;
-    private String end_date;
+    private String destination;
+    private long price;
+    private int duration;
+    @Column(name = "start_date")
+    private Date startDate;
+    private Date endDate;
     private String image;
     private String status;
+
 
     @ManyToOne
     @JoinColumn(name = "category_id")
