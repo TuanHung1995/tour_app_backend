@@ -61,8 +61,8 @@ public class TourServiceImpl implements TourService {
         tour.setPrice(tourDto.getPrice());
         tour.setLocation(tourDto.getLocation());
         tour.setDuration(tourDto.getDuration());
-        tour.setEnd_date(tourDto.getEnd_date());
-        tour.setStart_date(tourDto.getStart_date());
+        tour.setEndDate(tourDto.getEndDate());
+        tour.setStartDate(tourDto.getStartDate());
         tour.setImage(tourDto.getImage());
         tour.setStatus(tourDto.getStatus());
         Tour updatedTour = tourRepository.save(tour);
