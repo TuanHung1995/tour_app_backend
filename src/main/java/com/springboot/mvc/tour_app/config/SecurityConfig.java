@@ -1,5 +1,7 @@
 package com.springboot.mvc.tour_app.config;
 
+import com.springboot.mvc.tour_app.security.JwtAuthenticationEntryPoint;
+import com.springboot.mvc.tour_app.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
