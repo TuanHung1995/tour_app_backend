@@ -29,4 +29,8 @@ public class Tour {
     private String image;
     private String status;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
 }
