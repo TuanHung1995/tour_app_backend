@@ -2,6 +2,7 @@ package com.springboot.mvc.tour_app.config;
 
 import com.springboot.mvc.tour_app.security.JwtAuthenticationEntryPoint;
 import com.springboot.mvc.tour_app.security.JwtAuthenticationFilter;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -33,6 +34,11 @@ public class SecurityConfig {
     }
 
     @Bean
+    public static ModelMapper modelMapper(){
+        return new ModelMapper();
+    }
+
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
@@ -45,6 +51,7 @@ public class SecurityConfig {
                         //authorize.anyRequest().authenticated()
                         authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                                 .requestMatchers("/api/v1/auth/**").permitAll()
+                                .requestMatchers("/api/v1/search/**").permitAll()
                                 .anyRequest().authenticated()
                 ).exceptionHandling(exception -> exception
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)

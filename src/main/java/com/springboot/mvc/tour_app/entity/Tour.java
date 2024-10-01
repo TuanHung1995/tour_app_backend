@@ -29,10 +29,10 @@ public class Tour {
     private int duration;
     @Column(name = "start_date")
     private Date startDate;
+    @Column(name = "end_date")
     private Date endDate;
     private String image;
     private String status;
-
 
     @ManyToOne
     @JoinColumn(name = "category_id")

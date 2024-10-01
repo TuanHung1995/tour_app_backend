@@ -1,9 +1,11 @@
 package com.springboot.mvc.tour_app.service.impl;
 
+import com.springboot.mvc.tour_app.entity.Category;
 import com.springboot.mvc.tour_app.entity.Tour;
 import com.springboot.mvc.tour_app.exception.ResourceNotFoundException;
 import com.springboot.mvc.tour_app.payload.TourDto;
 import com.springboot.mvc.tour_app.payload.TourResponse;
+import com.springboot.mvc.tour_app.repository.CategoryRepository;
 import com.springboot.mvc.tour_app.repository.TourRepository;
 import com.springboot.mvc.tour_app.service.TourService;
 import org.modelmapper.ModelMapper;
@@ -20,10 +22,12 @@ public class TourServiceImpl implements TourService {
 
     private final ModelMapper mapper;
     private final TourRepository tourRepository;
+    private final CategoryRepository categoryRepository;
 
-    public TourServiceImpl(ModelMapper mapper, TourRepository tourRepository) {
+    public TourServiceImpl(ModelMapper mapper, TourRepository tourRepository, CategoryRepository categoryRepository) {
         this.mapper = mapper;
         this.tourRepository = tourRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     // Get all tours
@@ -47,6 +51,8 @@ public class TourServiceImpl implements TourService {
     @Override
     public TourDto createTour(TourDto tourDto) {
         Tour tour = convertTourDtoToTour(tourDto);
+        Category category = categoryRepository.findByName(tourDto.getCategory())
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "name", tourDto.getId()));
         Tour newTour = tourRepository.save(tour);
         return convertTourToTourDto(newTour);
     }

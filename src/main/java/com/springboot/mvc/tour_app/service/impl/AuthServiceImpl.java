@@ -67,10 +67,12 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User user = new User();
-        user.setFull_name(registerDto.getName());
+        user.setFull_name(registerDto.getFull_name());
         user.setUsername(registerDto.getUsername());
         user.setEmail(registerDto.getEmail());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+        user.setPhone(registerDto.getPhone());
+        user.setAddress(registerDto.getAddress());
 
         Set<Role> roles = new HashSet<>();
         Role userRole = roleRepository.findByName("ROLE_USER").get();
