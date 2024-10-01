@@ -14,12 +14,12 @@ public interface TourRepository extends JpaRepository<Tour, Long> {
 
     Page<Tour> findAllToursByCategoryAndStatus(Category categoryId, String status, Pageable pageable);
 
-    Page<Tour> findAllToursByCategoryIdAndStatusAndDestination(Long categoryId, String status, String destination, Pageable pageable);
+    Page<Tour> findAllToursByCategoryAndStatusAndDestination(Category categoryId, String status, String destination, Pageable pageable);
 
-    Page<Tour> findAllToursByCategoryIdAndStatusAndDestinationAndLocation(Long categoryId, String status, String destination, String location, Pageable pageable);
+    Page<Tour> findAllToursByCategoryAndStatusAndDestinationAndLocation(Category categoryId, String status, String destination, String location, Pageable pageable);
 
-    Page<Tour> findAllToursByCategoryIdAndStatusAndDestinationAndLocationAndStartDate(Long categoryId, String status, String destination, String location, Date start_date, Pageable pageable);
+    Page<Tour> findAllToursByCategoryAndStatusAndDestinationAndLocationAndStartDate(Category categoryId, String status, String destination, String location, Date start_date, Pageable pageable);
 
-    Page<Tour> findAllToursByCategoryIdAndStatusAndDestinationAndLocationAndStartDateAndEndDate(Long categoryId, String status, String destination, String location, Date start_date, Date end_date, Pageable pageable);
+    Page<Tour> findAllToursByCategoryAndStatusAndDestinationAndLocationAndStartDateAndEndDate(Category categoryId, String status, String destination, String location, Date start_date, Date end_date, Pageable pageable);
 
 }

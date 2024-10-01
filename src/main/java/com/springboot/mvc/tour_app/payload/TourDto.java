@@ -19,6 +19,6 @@ public class TourDto {
     private Date endDate;
     private String image;
     private String status;
-    private Category category;
+    private String category;
 
 }
