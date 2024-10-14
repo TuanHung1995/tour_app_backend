@@ -1,5 +1,6 @@
 package com.springboot.mvc.tour_app.service;
 
+import com.springboot.mvc.tour_app.entity.Tour;
 import com.springboot.mvc.tour_app.payload.TourDto;
 import com.springboot.mvc.tour_app.payload.TourResponse;
 
@@ -18,5 +19,7 @@ public interface TourService {
     String deleteTour(long id);
 
     TourResponse getAllToursByStatus(String status, int page, int size);
+
+    List<TourDto> getAllToursByCategoryAndStatus(String category, String status);
 
 }

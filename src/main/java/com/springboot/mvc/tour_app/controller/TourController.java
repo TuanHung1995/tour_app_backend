@@ -58,4 +58,11 @@ public class TourController {
         return tourService.getAllToursByStatus(status, page, size);
     }
 
+    // Get all tours by category and status
+    @GetMapping("/category")
+    public List<TourDto> getAllToursByCategoryAndStatus(@RequestParam(defaultValue = "") String category,
+                                                        @RequestParam(defaultValue = "") String status) {
+        return tourService.getAllToursByCategoryAndStatus(category, status);
+    }
+
 }

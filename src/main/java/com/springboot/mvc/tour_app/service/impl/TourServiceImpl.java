@@ -34,9 +34,18 @@ public class TourServiceImpl implements TourService {
     @Override
     public List<TourDto> getAllTours() {
         List<Tour> tours = tourRepository.findAll();
-        return tours.stream()
+        List<String> categories = tours.stream()
+                .map(tour -> tour.getCategory().getName())
+                .toList();
+        List<TourDto> toursDto = tours.stream()
                 .map(this::convertTourToTourDto)
-                .collect(Collectors.toList());
+                .toList();
+        // Set category for each tour
+        for (int i = 0; i < toursDto.size(); i++) {
+            toursDto.get(i).setCategory(categories.get(i));
+        }
+
+        return toursDto;
     }
 
     // Get tour by id
@@ -110,6 +119,17 @@ public class TourServiceImpl implements TourService {
         response.setLast(tours.isLast());
 
         return response;
+    }
+
+    // Get all tours by category and status
+    @Override
+    public List<TourDto> getAllToursByCategoryAndStatus(String category, String status) {
+        Category categoryEntity = categoryRepository.findByName(category)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "name", 404));
+        List<Tour> tours = tourRepository.findAllByCategoryAndStatus(categoryEntity, status);
+        return tours.stream()
+                .map(this::convertTourToTourDto)
+                .collect(Collectors.toList());
     }
 
     // Convert Tour to TourDto
