@@ -20,6 +20,8 @@ public interface TourService {
 
     TourResponse getAllToursByStatus(String status, int page, int size);
 
+    TourResponse sortingTours(String status, String location, String destination, Long minPrice, Long maxPrice, String direction, String sortBy, int page, int size);
+
     List<TourDto> getAllToursByCategoryAndStatus(String category, String status);
 
 }

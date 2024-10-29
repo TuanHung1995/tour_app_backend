@@ -1,6 +1,7 @@
 package com.springboot.mvc.tour_app.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Tour {
     private Long id;
     private String name;
     private String description;
+    @NotNull
     private String location;
     private String destination;
     private long price;

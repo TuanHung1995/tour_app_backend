@@ -10,7 +10,7 @@ public interface NewsService {
 
     NewsDto getNewsById(long id);
 
-    NewsDto createNews(NewsDto newsDto);
+    NewsDto createNews(NewsDto newsDto, long userId);
 
     NewsDto updateNews(long id, NewsDto newsDto);
 

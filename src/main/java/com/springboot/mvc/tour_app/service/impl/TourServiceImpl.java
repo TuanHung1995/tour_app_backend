@@ -8,10 +8,12 @@ import com.springboot.mvc.tour_app.payload.TourResponse;
 import com.springboot.mvc.tour_app.repository.CategoryRepository;
 import com.springboot.mvc.tour_app.repository.TourRepository;
 import com.springboot.mvc.tour_app.service.TourService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,6 +64,7 @@ public class TourServiceImpl implements TourService {
         Tour tour = convertTourDtoToTour(tourDto);
         Category category = categoryRepository.findByName(tourDto.getCategory())
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "name", tourDto.getId()));
+        tour.setCategory(category);
         Tour newTour = tourRepository.save(tour);
         return convertTourToTourDto(newTour);
     }
@@ -102,6 +105,37 @@ public class TourServiceImpl implements TourService {
 
         // Get tours by status
         Page<Tour> tours = tourRepository.findAllToursByStatus(status, pageable);
+
+        // Convert tours to TourDto
+        List<Tour> content = tours.getContent();
+        List<TourDto> tourDtoList = content.stream()
+                .map(this::convertTourToTourDto)
+                .toList();
+
+        // Create TourResponse object
+        TourResponse response = new TourResponse();
+        response.setContent(tourDtoList);
+        response.setPage(tours.getNumber());
+        response.setSize(tours.getSize());
+        response.setTotalElements(tours.getTotalElements());
+        response.setTotalPages(tours.getTotalPages());
+        response.setLast(tours.isLast());
+
+        return response;
+    }
+
+    @Override
+    public TourResponse sortingTours(String status, String location, String destination, Long maxPrice, Long minPrice, String direction, String sortBy, int page, int size) {
+
+        Sort sort = direction.equalsIgnoreCase("desc") ?
+                Sort.by(sortBy).descending() :
+                Sort.by(sortBy).ascending();
+
+        // Create Pageable object
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        // Get tours by status, location, price
+        Page<Tour> tours = tourRepository.findByStatusAndLocationContainingAndDestinationContainingAndPriceBetween(status, location, destination, minPrice, maxPrice, pageable);
 
         // Convert tours to TourDto
         List<Tour> content = tours.getContent();
