@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/tours")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TourController {
 
     private final TourService tourService;
@@ -56,6 +57,20 @@ public class TourController {
                                             @RequestParam(value = AppConstraint.PAGE_DEFAULT_NUMBER, required = false) int page,
                                             @RequestParam(value = AppConstraint.PAGE_DEFAULT_SIZE, required = false) int size) {
         return tourService.getAllToursByStatus(status, page, size);
+    }
+
+    // Sorting tours by status, location, price
+    @GetMapping("/sort")
+    public TourResponse sortingTours(@RequestParam(defaultValue = "") String status,
+                                     @RequestParam(defaultValue = "", required = false) String location,
+                                     @RequestParam(defaultValue = "", required = false) String destination,
+                                     @RequestParam(defaultValue = "0", required = false) Long minPrice,
+                                     @RequestParam(defaultValue = "" , required = false) Long maxPrice,
+                                     @RequestParam(defaultValue = "asc", required = false) String direction,
+                                     @RequestParam(defaultValue = "id", required = false) String sortBy,
+                                     @RequestParam(defaultValue = AppConstraint.PAGE_DEFAULT_NUMBER, required = false) int page,
+                                     @RequestParam(defaultValue = AppConstraint.PAGE_DEFAULT_SIZE, required = false) int size) {
+        return tourService.sortingTours(status, location, destination, minPrice, maxPrice, direction, sortBy, page, size);
     }
 
     // Get all tours by category and status

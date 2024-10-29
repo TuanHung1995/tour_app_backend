@@ -25,6 +25,7 @@ public class News {
     private String content;
     private Date created_at;
     private String status;
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

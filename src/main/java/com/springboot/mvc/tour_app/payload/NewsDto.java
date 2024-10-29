@@ -13,5 +13,7 @@ public class NewsDto {
     private String content;
     private Date created_at;
     private String status;
+    private String image;
+    private String author;
 
 }

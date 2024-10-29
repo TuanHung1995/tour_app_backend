@@ -2,14 +2,17 @@ package com.springboot.mvc.tour_app.service.impl;
 
 import com.springboot.mvc.tour_app.entity.News;
 import com.springboot.mvc.tour_app.entity.Tour;
+import com.springboot.mvc.tour_app.entity.User;
 import com.springboot.mvc.tour_app.exception.ResourceNotFoundException;
 import com.springboot.mvc.tour_app.payload.NewsDto;
 import com.springboot.mvc.tour_app.payload.TourDto;
 import com.springboot.mvc.tour_app.repository.NewsRepository;
+import com.springboot.mvc.tour_app.repository.UserRepository;
 import com.springboot.mvc.tour_app.service.NewsService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,10 +21,12 @@ import java.util.stream.Collectors;
 public class NewsServiceImpl implements NewsService {
 
     private final NewsRepository newsRepository;
+    private final UserRepository userRepository;
     private final ModelMapper mapper;
 
-    public NewsServiceImpl(NewsRepository newsRepository, ModelMapper mapper) {
+    public NewsServiceImpl(NewsRepository newsRepository, UserRepository userRepository, ModelMapper mapper) {
         this.newsRepository = newsRepository;
+        this.userRepository = userRepository;
         this.mapper = mapper;
     }
 
@@ -29,9 +34,19 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public List<NewsDto> getAllNews() {
         List<News> news = newsRepository.findAll();
-        return news.stream()
+        List<User> users = new ArrayList<>();
+        for (News n : news) {
+            users.add(n.getUser());
+        }
+        List<NewsDto> result = news.stream()
                 .map(this::convertNewsToNewsDto)
-                .collect(Collectors.toList());
+                .toList();
+
+        for (int i = 0; i < result.size(); i++) {
+            result.get(i).setAuthor(users.get(i).getFull_name());
+        }
+
+        return result;
     }
 
     // Get news by id
@@ -44,11 +59,15 @@ public class NewsServiceImpl implements NewsService {
 
     // Create news
     @Override
-    public NewsDto createNews(NewsDto newsDto) {
+    public NewsDto createNews(NewsDto newsDto, long userId) {
         News news = convertNewsDtoToNews(newsDto);
         news.setCreated_at(new Date());
+        news.setUser(userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId)));
         News newNews = newsRepository.save(news);
-        return convertNewsToNewsDto(newNews);
+        NewsDto result = convertNewsToNewsDto(newNews);
+        result.setAuthor(newNews.getUser().getFull_name());
+        return result;
     }
 
     // Update news

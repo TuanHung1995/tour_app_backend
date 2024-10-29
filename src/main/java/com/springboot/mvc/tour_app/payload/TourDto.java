@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 public class TourDto {
 
-    private Long id;
+    private long id;
     private String name;
     private String description;
     private String location;
