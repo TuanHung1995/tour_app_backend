@@ -51,6 +51,7 @@ public class SecurityConfig {
                         authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                                 .requestMatchers("/api/v1/auth/**").permitAll()
                                 .requestMatchers("/api/v1/search/**").permitAll()
+                                .requestMatchers("/api/v1/cart/**").permitAll()
                                 .anyRequest().authenticated()
                 ).exceptionHandling(exception -> exception
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
